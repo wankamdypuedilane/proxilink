@@ -199,6 +199,8 @@ management:
   endpoint:
     health:
       show-details: when-authorized
+      probes:
+        enabled: true
 ```
 
 ### Explication des propriétés
