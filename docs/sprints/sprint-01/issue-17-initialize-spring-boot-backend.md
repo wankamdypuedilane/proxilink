@@ -398,6 +398,14 @@ return new PostgreSQLContainer(
 
 Ainsi, les tests et l’environnement local utilisent la même version majeure de PostgreSQL.
 
+Le test de contexte désactive explicitement Docker Compose :
+
+```java
+@SpringBootTest(properties = "spring.docker.compose.enabled=false")
+```
+
+Cette configuration garantit que le test utilise uniquement la base PostgreSQL isolée fournie par Testcontainers. Il peut ainsi fonctionner sans fichier `.env` dans une CI propre et ne risque pas d’entrer en conflit avec une base locale utilisant le port 5432.
+
 La base de test :
 
 - est créée automatiquement ;
