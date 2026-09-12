@@ -50,6 +50,12 @@ Docker Compose 2.26.1
 
 Le projet utilise Maven Wrapper. Il n’est donc pas nécessaire d’installer Maven globalement.
 
+L’intégrité de la distribution Maven téléchargée par le wrapper est contrôlée avec la propriété `distributionSha256Sum`.
+
+Le script Unix conserve le téléchargement au format ZIP. Il utilise `unzip` lorsque cet outil est disponible et se rabat sur l’outil `jar` fourni par le JDK dans le cas contraire. Après une extraction avec `jar`, le droit d’exécution du programme Maven est restauré automatiquement.
+
+Ce fonctionnement permet au wrapper de rester utilisable dans un environnement WSL ne disposant pas de `unzip`, tout en vérifiant l’intégrité de l’archive téléchargée.
+
 ## 3. Génération du projet
 
 Le projet a été généré avec Spring Initializr en utilisant les paramètres suivants :
