@@ -6,7 +6,7 @@
 - **Issue GitHub :** #18
 - **Branche :** `feat/18-configure-postgresql-flyway`
 - **Composant :** Backend / Base de données
-- **Statut :** En cours
+- **Statut :** terminé
 
 ## 1. Objectif
 
