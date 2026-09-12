@@ -1,12 +1,15 @@
 # ADR 0003 — Définir les relations entre modules
 
-- Statut : accepté
+- Statut : accepté, amendé par l’ADR 0004
+- Amendement : [ADR 0004 — Affiner le découpage fonctionnel](0004-affiner-le-decoupage-fonctionnel.md)
 - Date : 10 septembre 2026
 - Décideur : Dilane Junior Wankam Dypue
 
 ## Contexte
 
-ProxiLink est organisé en monolithe modulaire. Les modules `account`, `provider`, `service`, `availability`, `booking` et `admin` doivent collaborer sans accéder directement à leurs détails internes.
+ProxiLink est organisé en monolithe modulaire. Les modules `account`, `provider`, `catalog`, `availability`, `booking` et `admin` doivent collaborer sans accéder directement à leurs détails internes.
+
+L’ADR 0004 a renommé le module technique `service` en `catalog`. Le concept métier de prestation et son identifiant `serviceId` restent toutefois valides et appartiennent désormais au module `catalog`.
 
 Des relations JPA entre entités appartenant à des modules différents créeraient un couplage fort. Une modification interne d’un module pourrait alors affecter directement les autres modules et permettre le chargement involontaire de graphes d’objets importants.
 
@@ -68,7 +71,7 @@ Il devra passer par l’interface publique du module concerné.
 
 Une communication synchrone sera utilisée lorsqu’une réponse immédiate est nécessaire pour terminer une opération métier.
 
-Par exemple, le module `booking` pourra interroger les interfaces publiques des modules `account`, `service` et `availability` avant de créer une réservation.
+Par exemple, le module `booking` pourra interroger les interfaces publiques des modules `account`, `catalog` et `availability` avant de créer une réservation.
 
 Un événement de domaine sera utilisé pour informer les autres modules d’un fait déjà survenu, lorsque leur réaction ne doit pas faire partie de l’opération principale.
 

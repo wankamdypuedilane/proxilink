@@ -110,7 +110,7 @@ curl http://localhost:8080/actuator/health
 La réponse attendue est :
 
 ```json
-{"status":"UP"}
+{"groups":["liveness","readiness"],"status":"UP"}
 ```
 
 ## Tests et vérifications
@@ -125,6 +125,7 @@ cd backend
 Exécuter toutes les vérifications et produire le rapport JaCoCo :
 
 ```bash
+cd backend
 ./mvnw verify
 ```
 
@@ -144,6 +145,6 @@ backend/target/site/jacoco/index.html
 ## Organisation du projet
 
 - développement individuel ;
-- charge prévue de 3 à 5 heures par jour ;
+- charge prévue de 3 à 5 heures par semaine ;
 - sprints de 12 jours ;
 - tests, sécurité, documentation et CI/CD intégrés progressivement.

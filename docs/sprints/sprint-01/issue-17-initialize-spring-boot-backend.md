@@ -137,6 +137,24 @@ volumes:
   pgdata:
 ```
 
+Le fichier `.env.example` documente les variables nécessaires sans contenir de mot de passe :
+
+```dotenv
+POSTGRES_DB=proxilink
+POSTGRES_USER=proxilink
+POSTGRES_PASSWORD=
+```
+
+Après un nouveau clonage du dépôt, chaque développeur crée sa configuration locale :
+
+```bash
+cp .env.example .env
+```
+
+Il doit ensuite renseigner une valeur locale pour `POSTGRES_PASSWORD` dans `.env` avant de démarrer PostgreSQL ou de valider la configuration Docker Compose.
+
+Le fichier `.env` est ignoré par Git et ne doit jamais être ajouté au dépôt.
+
 ### Pourquoi utiliser `postgres:16-alpine` ?
 
 `postgres:latest` peut changer automatiquement de version majeure. Deux développeurs peuvent alors recevoir des versions différentes sans avoir modifié le projet.
