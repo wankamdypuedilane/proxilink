@@ -232,8 +232,10 @@ src/main/resources/db/migration/
 Exemple de nom :
 
 ```text
-V1__create_account_table.sql
+V2__create_account_table.sql
 ```
+
+La version `V1` est réservée à la migration technique initiale `V1__initialize_database.sql`, créée dans l’issue #18. Les migrations métier commencent donc à la version `V2`.
 
 #### `open-in-view: false`
 
@@ -596,13 +598,17 @@ BUILD SUCCESS
 
 ## 16. Avertissements connus
 
-Flyway affiche actuellement :
+Avant l’issue #18, Flyway affichait l’avertissement suivant au démarrage :
 
 ```text
 No migrations found
 ```
 
-Cet avertissement est attendu : aucune table métier n’a encore été créée. La première migration sera ajoutée avec le premier modèle persistant.
+Cet avertissement était normal : le dossier `src/main/resources/db/migration/` n’existait pas encore et aucun script SQL n’était disponible.
+
+Depuis l’issue #18, la migration `V1__initialize_database.sql` est présente. Flyway crée désormais la table `flyway_schema_history` et y enregistre la version `1`. L’avertissement ne s’affiche donc plus.
+
+Les futures tables métier seront créées dans de nouvelles migrations versionnées. Une migration déjà appliquée ne doit jamais être modifiée : toute évolution du schéma passe par une nouvelle migration.
 
 Mockito et la JVM affichent également des avertissements concernant le chargement dynamique d’un agent Java. Ils ne provoquent pas l’échec des tests et devront être traités dans une tâche technique distincte avant qu’une future version du JDK désactive ce comportement.
 

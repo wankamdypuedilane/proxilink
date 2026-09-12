@@ -1,0 +1,2 @@
+-- Initial Flyway migration for the ProxiLink database.
+-- Business tables will be introduced by migrations owned by their respective modules.
