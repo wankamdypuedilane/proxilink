@@ -129,7 +129,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-proxilink}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD in backend/.env}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
