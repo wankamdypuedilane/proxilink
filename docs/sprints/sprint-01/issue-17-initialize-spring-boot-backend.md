@@ -90,7 +90,7 @@ bash: unzip: command not found
 L’archive Spring Initializr a donc été extraite avec l’outil `jar`, déjà fourni avec Java :
 
 ```bash
-jar -xf /mnt/c/Users/wanka/Downloads/proxilink-backend.zip
+jar -xf /path/to/proxilink-backend.zip
 ```
 
 Le contenu initialement extrait dans un sous-dossier `proxilink-backend/` a ensuite été déplacé directement dans `backend/`.
@@ -125,9 +125,9 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: proxilink
-      POSTGRES_USER: proxilink
-      POSTGRES_PASSWORD: proxilink
+      POSTGRES_DB: ${POSTGRES_DB:-proxilink}
+      POSTGRES_USER: ${POSTGRES_USER:-proxilink}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD in backend/.env}
     ports:
       - "5432:5432"
     volumes:
@@ -153,7 +153,7 @@ Les identifiants présents dans ce fichier sont exclusivement destinés au déve
 Validation de la configuration :
 
 ```bash
-docker compose config
+docker compose config --quiet
 ```
 
 ## 6. Configuration de Spring Boot
@@ -541,7 +541,7 @@ Cycle complet avec rapport JaCoCo :
 Validation Docker Compose :
 
 ```bash
-docker compose config
+docker compose config --quiet
 ```
 
 Contrôle de santé :
