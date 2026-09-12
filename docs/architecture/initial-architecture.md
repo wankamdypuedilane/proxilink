@@ -57,33 +57,33 @@ Le backend est organisé par domaine fonctionnel plutôt que uniquement par couc
 flowchart TD
     ACCOUNT[account]
     PROVIDER[provider]
-    SERVICE[service]
+    CATALOG[catalog]
     AVAILABILITY[availability]
     BOOKING[booking]
     ADMIN[admin]
 
     PROVIDER --> ACCOUNT
-    SERVICE --> PROVIDER
+    CATALOG --> PROVIDER
     AVAILABILITY --> PROVIDER
     BOOKING --> ACCOUNT
-    BOOKING --> SERVICE
+    BOOKING --> CATALOG
     BOOKING --> AVAILABILITY
     ADMIN --> ACCOUNT
     ADMIN --> PROVIDER
-    ADMIN --> SERVICE
+    ADMIN --> CATALOG
     ADMIN --> BOOKING
 ```
 
 Les modules ont les responsabilités suivantes :
 
-- `account` : comptes, profils, authentification et autorisations ;
-- `provider` : informations propres aux prestataires ;
-- `service` : publication et gestion des prestations ;
-- `availability` : créneaux proposés par les prestataires ;
+- `account` : identité, authentification et état des comptes ;
+- `provider` : profils et informations propres aux prestataires ;
+- `catalog` : publication, consultation et recherche simple des prestations ;
+- `availability` : définition et consultation des disponibilités ;
 - `booking` : création et suivi des réservations ;
-- `admin` : opérations essentielles d’administration.
+- `admin` : orchestration des opérations réservées à l’administration, sans reprendre la logique métier des autres modules.
 
-Chaque flèche représente une dépendance autorisée entre deux modules.
+Chaque flèche représente une dépendance autorisée vers l’interface publique d’un autre module. Les détails du découpage sont documentés dans l’[ADR 0004](decisions/0004-affiner-le-decoupage-fonctionnel.md).
 
 ## 6. Modèle initial du compte
 
@@ -183,3 +183,4 @@ L’utilisation des interfaces Spring Data JPA constitue un choix fourni par le 
 - [ADR 0001 — Utiliser un monolithe modulaire](decisions/0001-utiliser-un-monolithe-modulaire.md)
 - [ADR 0002 — Utiliser des sessions serveur pour l’authentification](decisions/0002-utiliser-des-sessions-serveur.md)
 - [ADR 0003 — Définir les relations entre modules](decisions/0003-definir-les-relations-entre-modules.md)
+- [ADR 0004 — Affiner le découpage fonctionnel](decisions/0004-affiner-le-decoupage-fonctionnel.md)
