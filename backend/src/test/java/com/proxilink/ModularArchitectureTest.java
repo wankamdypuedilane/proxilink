@@ -3,7 +3,7 @@ package com.proxilink;
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
 
-class ModularArchitectureTests {
+class ModularArchitectureTest {
 
     @Test
     void verifiesModularStructure() {
