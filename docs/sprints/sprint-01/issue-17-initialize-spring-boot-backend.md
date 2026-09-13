@@ -317,7 +317,7 @@ docs/architecture/decisions/0004-affiner-le-decoupage-fonctionnel.md
 Le fichier suivant a été ajouté :
 
 ```text
-src/test/java/com/proxilink/ModularArchitectureTests.java
+src/test/java/com/proxilink/ModularArchitectureTest.java
 ```
 
 Contenu :
@@ -328,7 +328,7 @@ package com.proxilink;
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
 
-class ModularArchitectureTests {
+class ModularArchitectureTest {
 
     @Test
     void verifiesModularStructure() {
@@ -339,10 +339,12 @@ class ModularArchitectureTests {
 
 Ce test analyse les modules et échoue lorsqu’une dépendance non autorisée ou un cycle architectural est détecté.
 
+La classe a reçu le suffixe `Test` dans l’issue #19 afin de respecter la convention des tests rapides exécutés par Surefire.
+
 Exécution ciblée :
 
 ```bash
-./mvnw -Dtest=ModularArchitectureTests test
+./mvnw -Dtest=ModularArchitectureTest test
 ```
 
 Résultat obtenu :
@@ -369,7 +371,7 @@ src/test/java/
 Une première commande contenait également une faute de frappe :
 
 ```bash
-./mvnw -Dtest=ModularArchitectureTests testy
+./mvnw -Dtest=ModularArchitectureTest testy
 ```
 
 Maven a correctement signalé :
@@ -407,6 +409,8 @@ Le test de contexte désactive explicitement Docker Compose :
 ```
 
 Cette configuration garantit que le test utilise uniquement la base PostgreSQL isolée fournie par Testcontainers. Il peut ainsi fonctionner sans fichier `.env` dans une CI propre et ne risque pas d’entrer en conflit avec une base locale utilisant le port 5432.
+
+Depuis l’issue #19, ce test de contexte correspond à la classe `ProxilinkBackendApplicationIT`. Son suffixe `IT` le réserve à Failsafe : il est exécuté par `./mvnw verify` et non par `./mvnw test`.
 
 La base de test :
 
@@ -559,16 +563,16 @@ Compilation :
 Test architectural :
 
 ```bash
-./mvnw -Dtest=ModularArchitectureTests test
+./mvnw -Dtest=ModularArchitectureTest test
 ```
 
-Ensemble des tests :
+Tests rapides exécutés par Surefire, sans Docker :
 
 ```bash
 ./mvnw test
 ```
 
-Cycle complet avec rapport JaCoCo :
+Cycle complet avec le test d’intégration exécuté par Failsafe et le rapport JaCoCo :
 
 ```bash
 ./mvnw verify
@@ -596,6 +600,8 @@ Skipped: 0
 BUILD SUCCESS
 ```
 
+Depuis l’issue #19, `./mvnw test` exécute `MockitoConfigurationTest` et `ModularArchitectureTest`. Le test de contexte `ProxilinkBackendApplicationIT` est exécuté uniquement par `./mvnw verify`.
+
 ## 16. Avertissements connus
 
 Avant l’issue #18, Flyway affichait l’avertissement suivant au démarrage :
@@ -610,7 +616,11 @@ Depuis l’issue #18, la migration `V1__initialize_database.sql` est présente. 
 
 Les futures tables métier seront créées dans de nouvelles migrations versionnées. Une migration déjà appliquée ne doit jamais être modifiée : toute évolution du schéma passe par une nouvelle migration.
 
-Mockito et la JVM affichent également des avertissements concernant le chargement dynamique d’un agent Java. Ils ne provoquent pas l’échec des tests et devront être traités dans une tâche technique distincte avant qu’une future version du JDK désactive ce comportement.
+Pendant l’issue #17, Mockito s’attachait dynamiquement à la JVM de test. Mockito et la JVM affichaient alors des avertissements concernant cet auto-attachement et le chargement dynamique d’un agent Java. Ils ne provoquaient pas l’échec des tests.
+
+Depuis l’issue #19, Mockito est chargé explicitement comme agent Java par la configuration Maven de Surefire et de Failsafe. Les avertissements d’auto-attachement et de chargement dynamique ont disparu.
+
+Un avertissement de la JVM concernant le partage des classes subsiste. Il est bénin, ne provoque pas l’échec des tests et ne constitue pas un problème Mockito à corriger.
 
 ## 17. Résultat
 

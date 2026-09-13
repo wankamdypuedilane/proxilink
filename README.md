@@ -66,7 +66,7 @@ Les frontières entre les modules sont contrôlées avec Spring Modulith.
 - Flyway ;
 - Spring Security ;
 - Docker Compose ;
-- JUnit 5 ;
+- JUnit Jupiter ;
 - Mockito ;
 - Testcontainers ;
 - JaCoCo.
@@ -115,19 +115,23 @@ La réponse attendue est :
 
 ## Tests et vérifications
 
-Exécuter les tests :
+Exécuter les tests rapides :
 
 ```bash
 cd backend
 ./mvnw test
 ```
 
-Exécuter toutes les vérifications et produire le rapport JaCoCo :
+Cette commande exécute les classes `*Test.java` avec Surefire. Elle ne nécessite pas Docker.
+
+Exécuter également les tests d’intégration et produire le rapport JaCoCo :
 
 ```bash
 cd backend
 ./mvnw verify
 ```
+
+Cette commande exécute en plus les classes `*IT.java` avec Failsafe. Docker doit être démarré, car Testcontainers lance une base PostgreSQL temporaire.
 
 Le rapport de couverture est généré dans :
 
