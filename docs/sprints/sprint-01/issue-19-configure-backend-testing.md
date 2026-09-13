@@ -257,6 +257,23 @@ target/site/jacoco/index.html
 
 Surefire et Failsafe reçoivent tous deux l’agent JaCoCo par la même configuration `argLine`. Le rapport est produit pendant la phase `verify` à partir du fichier `target/jacoco.exec`.
 
+L’exécution `prepare-agent` déclare explicitement l’option `append` :
+
+```xml
+<execution>
+    <goals>
+        <goal>prepare-agent</goal>
+    </goals>
+    <configuration>
+        <append>true</append>
+    </configuration>
+</execution>
+```
+
+Avec `append=true`, chaque JVM de test ajoute ses données à `target/jacoco.exec` au lieu de remplacer celles de la JVM précédente. Le fichier conserve ainsi les données produites successivement par les JVM Surefire et Failsafe. Le rapport généré pendant `verify` peut donc exploiter les données accumulées des deux phases.
+
+Cette valeur correspond au comportement par défaut de JaCoCo. La déclarer rend l’intention visible dans le `pom.xml`.
+
 Aucune expérience séparée n’a été menée pour attribuer les données du rapport à la phase Surefire ou à la phase Failsafe.
 
 Le rapport observé analyse une classe et indique la couverture suivante :
@@ -266,6 +283,15 @@ Le rapport observé analyse une classe et indique la couverture suivante :
 | `ProxilinkBackendApplication` | 5 | 3 | 37,50 % |
 
 Cette valeur est une base initiale peu représentative. Le backend ne contient encore que sa classe de démarrage et aucune logique métier.
+
+`./mvnw clean verify` a été réexécuté après la déclaration explicite de `append=true` :
+
+- le journal JaCoCo affiche `append=true` dans l’`argLine` ;
+- Surefire a exécuté 2 tests avec succès ;
+- Failsafe a exécuté 1 test avec succès ;
+- le build a réussi avec le code Maven 0 ;
+- le rapport analyse toujours une classe ;
+- la couverture des instructions reste de 37,50 %.
 
 ## 11. Politique de couverture
 
