@@ -139,6 +139,25 @@ Le rapport de couverture est généré dans :
 backend/target/site/jacoco/index.html
 ```
 
+## Frontend
+
+Le frontend est une application React, TypeScript et Vite située dans le dossier `frontend/`.
+
+Il nécessite Node.js 22.22.2 ou plus récent dans la branche 22, 24.15.0 ou plus récent dans la branche 24, ou Node.js 26 et versions suivantes.
+
+Installation et démarrage depuis la racine du dépôt :
+
+```bash
+cd frontend
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+Le fichier `.env.local` définit `VITE_API_URL`, l’adresse du backend local. Il ne doit jamais contenir de secret.
+
+La documentation complète du frontend se trouve dans [frontend/README.md](frontend/README.md).
+
 ## Documentation
 
 - [Vision produit](docs/product-vision.md)
